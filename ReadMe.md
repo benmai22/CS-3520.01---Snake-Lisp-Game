@@ -1,8 +1,8 @@
-#Python and LISP Snake
+# Python and LISP Snake
 To run the LISP version of snake it is recommended to be running on Linux and follow the instructions for LISP Install.
 
-##LISP
-###Install
+## LISP
+### Install
 Install the prerequisites by running `apt-get install sbcl libsdl2-dev libffi-dev libffi6 libsdl2-ttf-2.0`.
 
 Next install quick LISP with `curl -0 https://beta.quicklisp.org/quicklisp.lisp` and run the file with sbcl using the 
@@ -10,9 +10,9 @@ command `sbcl --load quicklisp.lisp`. Once quicklisp is installed it is recommen
 `(ql:add-to-init-file)` while in sbcl (enter sbcl by typing `sbcl`). Next use quicklisp to install sdl2 and opengl with
 with the following commands: `(ql:quickload "sdl2")`, `(ql:quickload "sdl2-ttf")`, and `(ql:quickload "cl-opengl")`. 
 
-###Running Snake
+### Running Snake
 To run the snake game run `sbcl --load snake.lsp`.
 
-##Python
-###Running Snake
-To run a normal game of snake in python run `python Snake.py`.
+## Python
+### Running Snake
+To run Snake with genetic algorithm control, run `python Main.py`. You will be asked if you want to enter custom values or use default (answer with `y` or `n`). The program will output a data.xlsx file that logs the progress over time. By default the program will run for 50 generations with a population of 100. You can quit anytime and retain the data up until that point.
