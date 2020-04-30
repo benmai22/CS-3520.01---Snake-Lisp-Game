@@ -1,0 +1,9 @@
+
+My main focus as been on the python genetic algorithm aspect of the this project, as well as some repo maintenance. In terms of non-code work, I wrote the Methods, Experiments, Results and Future Works sections on the genetic algorithm.
+
+Commits:
+
+5ffdf7114310a214e79234361d15056f809f071f - Added ttf file for lisp and sdl2 configuration
+0dcfa6943e10dd3289e42fee591b4d3e75bd3ed5 - Added the start of the python files with a snake program that can be played by a person, as well as the graphics file for python graphics. Also added a ReadMe with installation instructions for the LISP stuff
+7f4ab3937955d9936ab05fdba655baff86126b85 - Added python's main script file that contains the code for the genetic algorithm (all original source code) has two different decision methods, one just using the raw output, the other tries to prevent moves that instantly kill the snake, also made the program output an excel file with data throughout the training.
+cda1f88ca1331e25dd09e896a9616455ea880c18 - Updated the ReadMe (mainly formatting issues) and added python running instructions.
