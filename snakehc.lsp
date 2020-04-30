@@ -186,18 +186,8 @@
    	(bonus :initform 25 :accessor bonus))
 )
 
-(defclass poison (food)
-  	((red :initform 255)
-  	(green :initform 0)
-  	(blue :initform 0)
-   	(penalty :initform 15 :accessor penalty))
-)
-
 (defun make-random-food ()
-  (let ((choice (random 2)))
-    (case choice
-      (0 (make-instance 'good))
-      (1 (make-instance 'poison)))))
+      (make-instance 'good))
 
 (defmethod draw (renderer (food food))
   	(with-accessors ((x x-loc)
@@ -212,12 +202,6 @@
 
 (defmethod eat ((worm worm) (good good))
   	(incf (max-length worm) (bonus good)))
-(defmethod eat ((worm worm) (poison poison))
-  	(decf (max-length worm) (penalty poison))
-  	(setf (body worm)
-        (subseq (body worm)
-                (penalty poison)
-                (length (body worm)))))
 
 (defmethod collided ((worm worm) (food food))
   	(with-accessors ((worm-x head-x)
@@ -294,9 +278,6 @@
                 (incf score)
                 (eat worm food)
                 (setf food (make-random-food)))
-        (when (>= 0 (max-length worm))
-          (show-message (format nil "Poisoned to death!") (/ *screen-width* 2) (/ *screen-height* 2) renderer)
-                (setf *running* nil))
         (sdl2:render-present renderer)
         (sdl2:delay *frame-delay*)
         ;(when (not *running*)
