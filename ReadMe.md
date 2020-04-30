@@ -1,4 +1,4 @@
-# Python and LISP Snake
+pip# Python and LISP Snake
 To run the LISP version of snake it is recommended to be running on Linux and follow the instructions for LISP Install.
 
 ## LISP
@@ -13,6 +13,22 @@ with the following commands: `(ql:quickload "sdl2")`, `(ql:quickload "sdl2-ttf")
 ### Running Snake
 To run the snake game run `sbcl --load snake.lsp`.
 
+IF this command fails, try doing the following.
+
+Navigate to directory of "snakege.lsp" in terminal.
+Open sbcl with `sbcl`.
+Inside sbcl run `(load "~/quicklisp/setup.lisp")`.
+Then, still in sbcl, run `(load "snakege.lsp")`.
+
 ## Python
+### Install
+All the following dependencies must be installed.
+Install Python3 with `sudo apt-get install python3`.
+Install Tkinter with `sudo apt-get install python3.6-tk`.
+Install pip for Python3 with `sudo apt-get install python3-pip`.
+Install Numpy with `sudo pip3 install -U numpy`.
+Install Setup Tools for Python3 with `pip3 install -U setuptools`.
+Install Openpyxl with `pip3 install openpyxl`.
+
 ### Running Snake
-To run Snake with genetic algorithm control, run `python Main.py`. You will be asked if you want to enter custom values or use default (answer with `y` or `n`). The program will output a data.xlsx file that logs the progress over time. By default the program will run for 50 generations with a population of 100. You can quit anytime and retain the data up until that point.
+To run Snake with genetic algorithm control, run `python3 Main.py`. You will be asked if you want to enter custom values or use default (answer with `y` or `n`). The program will output a data.xlsx file that logs the progress over time. By default the program will run for 50 generations with a population of 100. You can quit anytime and retain the data up until that point.
