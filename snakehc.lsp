@@ -63,6 +63,7 @@
 	(sdl2:set-render-draw-color renderer 0 0 0 255)
   	(sdl2:render-clear renderer))
 
+
 ; worm
 (defclass worm ()
   	((head-x :initarg :x :initform (/ *screen-width* 2) :accessor head-x)
@@ -293,7 +294,86 @@
   )
 )
 
-;(defun calc_hamiltonian_cycles (
+
+; path generation
+(defvar tmpPath)
+
+(defun calc_hamiltonian_cycles_part (grid path targetRow targetCol curRow curCol)
+  ;(reduce '* (array-dimensions grid))  ; Path should be this big when we're done
+
+  ; When called, the current space could be T, NIL, or out of bounds.
+  ;
+  ; If it's NIL, we'll make it T so it's not considered until we back out of the function.
+  ; Then we'll consider the 4 adjacent spaces.
+  ;
+  ; Once we generate a full path, we can check if we ended up adjacent to the
+  ; target space.
+
+  (cond
+    
+    ; Check if the space is in bounds...
+    ((or
+       (< curRow 0) 
+       (< curCol 0)
+       (> curRow (car (array-dimensions grid)) )
+       (> curCol (car (cdr (array-dimensions grid)) ) )
+     )
+    
+      ; This space is out of bounds... reject
+      (princ "Out of bounds")
+      '()
+    )
+
+    ; This space is inside bounds... is it T or NIL?
+    ((aref grid curRow curCol)
+
+      ; This space has a T -- it's in our current path
+      (cond
+	((and
+	  (= targetRow curRow) 
+          (= targetCol curCol) 
+          (= (list-length path) (reduce '* (array-dimensions grid)))
+         )
+	  ; TODO return path
+          T ; We have a full-length path which returned to the start
+	)
+
+	(T
+          '()  ; This is not one of those paths... reject it.
+	)
+      )
+      ;(princ "In bounds")
+    )
+        
+    (T
+      ; This space has a NIL -- it's not in our current path
+      (princ "In bounds and NIL")
+      (setf (aref grid curRow curCol) T)
+      ; Recursive calls go here
+      (write grid)
+      (print curRow)
+      (write curCol)
+      '()
+    )
+
+  ) ; end of cond
+
+  ;print(
+	;(loop for row in spaces
+	      ;for col in row
+	      ;collect col)
+	;)
+)
+
+(defun calc_hamiltonian_cycles (numRows numCols initRow initCol)
+
+  (calc_hamiltonian_cycles_part
+    (make-array (list numRows numCols) :initial-element 'NIL) 
+    '()
+    initRow initCol ; target
+    initRow initCol ; current
+  )
+)
 
 (defun snake_init ()
   (setf *running* t)
@@ -304,9 +384,9 @@
      (setf *runnno* 1)
      (setf *running* t)
 
+     ;(calc_hamiltonian_cycles 2 2)
+
      (setf moves (list 0 2))
-     ;(setf moves (append moves (list '0)))
-     ;(setf moves (append moves (list '2)))
 
      (snake_run *renderer* moves) 
   )
@@ -314,4 +394,7 @@
 )
 
 ;;run
-(snake_init)
+;(snake_init)
+(write(calc_hamiltonian_cycles 5 5 2 2))
+(terpri)
+(terpri)
