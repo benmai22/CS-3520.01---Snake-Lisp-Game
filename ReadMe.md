@@ -10,15 +10,20 @@ command `sbcl --load quicklisp.lisp`. Once quicklisp is installed it is recommen
 `(ql:add-to-init-file)` while in sbcl (enter sbcl by typing `sbcl`). Next use quicklisp to install sdl2 and opengl with
 with the following commands: `(ql:quickload "sdl2")`, `(ql:quickload "sdl2-ttf")`, and `(ql:quickload "cl-opengl")`. 
 
-### Running Snake
+### Running Snake (playable game)
 To run the snake game run `sbcl --load snake.lsp`.
 
 IF this command fails, try doing the following.
 
 Navigate to directory of "snakege.lsp" in terminal.
-Open sbcl with `sbcl`.
-Inside sbcl run `(load "~/quicklisp/setup.lisp")`.
-Then, still in sbcl, run `(load "snakege.lsp")`.
+Run command `sbcl --load ~/quicklisp/setup.lisp --load "snake.lsp"`.
+Then, once in sbcl, run `(snake)`.
+
+### Running Snake (genetic algorithm)
+
+Navigate to directory of "snakege.lsp".
+Run command `sbcl --load ~/quicklisp/setup.lisp --load "snakege.lsp"`.
+
 
 ## Python
 ### Install
@@ -30,5 +35,12 @@ Install Numpy with `sudo pip3 install -U numpy`.
 Install Setup Tools for Python3 with `pip3 install -U setuptools`.
 Install Openpyxl with `pip3 install openpyxl`.
 
-### Running Snake
+### Running Snake (playable game) ?????
+
+Navigate to directory of "Snake.py".
+Run command `python3 Snake.py`.
+Currently does not work?
+
+### Running Snake (genetic algorithm)
+
 To run Snake with genetic algorithm control, run `python3 Main.py`. You will be asked if you want to enter custom values or use default (answer with `y` or `n`). The program will output a data.xlsx file that logs the progress over time. By default the program will run for 50 generations with a population of 100. You can quit anytime and retain the data up until that point.
