@@ -385,30 +385,19 @@
                 ;(print moveIdx)
 	    (setq moveIdx (+ moveIdx 1))
 	  ) ; End let
-        ) ; End loop while...
+        ) ; End loop...
 
-      ;(print tmpPath)
+        ;(print tmpPath)
+    
+        ; If at this point we have not found a valid path,
+        ; we'll have to backtrack. Thus, we'll set this space to be NIL
+        ; again.
+        (when (not tmpPath)
+          (setf (aref grid curRow curCol) NIL)
+        )
+    
+        tmpPath ; Return whatever we've gotten
 
-      ; If at this point we have not found a valid path,
-      ; we'll have to backtrack. Thus, we'll set this space to be NIL
-      ; again.
-      (when (not tmpPath)
-        (setf (aref grid curRow curCol) NIL)
-      )
-
-      tmpPath ; Return whatever we've gotten
-
-;     (calc_hamiltonian_cycles_part
-;       grid
-;       (append path '(0))
-;       targetRow targetCol 
-;       (- curRow 1) curCol
-;     )
-
-
-      ;(print curRow)
-      ;(write curCol)
-      ;'()
       ) ; End let
     )
 
