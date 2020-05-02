@@ -6,7 +6,7 @@
 (defparameter *screen-height* 600)
 (defparameter *move-step* 10)
 (defparameter *food_size* 7)
-(defparameter *max_snake_length* 50)
+(defparameter *max_snake_length* 5)
 (defparameter *frame-delay* 30)
 (defparameter *close-delay* 1000)
 (defparameter *font* nil)
@@ -349,71 +349,54 @@
     )
         
     (T
-      ; This space has a NIL -- it's not in our current path
+      ; This space has a NIL -- it's not in our current path.
+      ; Thus we'll add it to the path.
       (setf (aref grid curRow curCol) T)
 
-      (terpri)
-      (print grid)
-      (print path)
+;     (terpri)
+;     (print grid)
+;     (print path)
 
       ; We'll store the results of each of the recursive calls
       ; inside tmpPath. If any returns something other than NIL,
       ; that means it was a successful call!
-      (let ((tmpPath NIL))
-	; Check up
-        (setq tmpPath
-          (calc_hamiltonian_cycles_part
-            grid
-            (append path '(0))
-            targetRow targetCol 
-            (- curRow 1) curCol
-          )
-        )
+      (let ((tmpPath NIL) (moveList '(0 1 2 3)) (moveIdx 0))
 
-	; The following checks all work because (not x) is only true when
-	; x is EXACTLY a value of NIL. And NIL is returned only if the
-	; given path does not yeild a valid output.
-
-	(when (not tmpPath)
-	  ; Check down
-          (setq tmpPath
-            (calc_hamiltonian_cycles_part
-              grid
-              (append path '(1))
-              targetRow targetCol 
-              (+ curRow 1) curCol
+	(loop while (and (not tmpPath)
+			 (< moveIdx (list-length moveList))
+		    ) do
+          (let ((nextMove (nth moveIdx moveList)) (rowOffset 0) (colOffset 0))
+            (cond
+              ((= nextMove 0) (setq rowOffset -1))
+              ((= nextMove 1) (setq rowOffset  1))
+              ((= nextMove 2) (setq colOffset -1))
+              ((= nextMove 3) (setq colOffset  1))
             )
-          )
-	)
-
-	(when (not tmpPath)
-	  ; Check left
-          (setq tmpPath
-            (calc_hamiltonian_cycles_part
-              grid
-              (append path '(2))
-              targetRow targetCol 
-              curRow (- curCol 1)
+        
+            (setq tmpPath
+              (calc_hamiltonian_cycles_part
+                grid
+                (append path (list nextMove))
+                targetRow targetCol 
+                (+ curRow rowOffset) (+ curCol colOffset)
+              )
             )
-          )
-	)
 
-	(when (not tmpPath)
-	  ; Check right
-          (setq tmpPath
-            (calc_hamiltonian_cycles_part
-              grid
-              (append path '(3))
-              targetRow targetCol 
-              curRow (+ curCol 1)
-            )
-          )
-	)
+                ;(print moveIdx)
+	    (setq moveIdx (+ moveIdx 1))
+	  ) ; End let
+        ) ; End loop while...
 
-	(print tmpPath)
+      ;(print tmpPath)
 
-	tmpPath ; Return whatever we've gotten
+      ; If at this point we have not found a valid path,
+      ; we'll have to backtrack. Thus, we'll set this space to be NIL
+      ; again.
+      (when (not tmpPath)
+        (setf (aref grid curRow curCol) NIL)
       )
+
+      tmpPath ; Return whatever we've gotten
 
 ;     (calc_hamiltonian_cycles_part
 ;       grid
@@ -426,6 +409,7 @@
       ;(print curRow)
       ;(write curCol)
       ;'()
+      ) ; End let
     )
 
   ) ; end of cond
@@ -457,8 +441,10 @@
      (setf *running* t)
 
      ;(calc_hamiltonian_cycles 2 2)
+     (setf moves (calc_hamiltonian_cycles 4 5 2 2))
+     (print moves)
 
-     (setf moves (list 0 2))
+     ;(setf moves (list 0 2))
 
      (snake_run *renderer* moves) 
   )
@@ -466,8 +452,8 @@
 )
 
 ;;run
-;(snake_init)
+(snake_init)
 (terpri)
-(print(calc_hamiltonian_cycles 5 5 4 4))
+;(print(calc_hamiltonian_cycles 8 8 2 2))
 (terpri)
 (terpri)
