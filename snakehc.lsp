@@ -296,7 +296,7 @@
 
 
 ; path generation
-(defvar tmpPath)
+;(defvar tmpPath)
 
 (defun calc_hamiltonian_cycles_part (grid path targetRow targetCol curRow curCol)
   ;(reduce '* (array-dimensions grid))  ; Path should be this big when we're done
@@ -309,18 +309,20 @@
   ; Once we generate a full path, we can check if we ended up adjacent to the
   ; target space.
 
+
   (cond
     
     ; Check if the space is in bounds...
     ((or
        (< curRow 0) 
        (< curCol 0)
-       (> curRow (car (array-dimensions grid)) )
-       (> curCol (car (cdr (array-dimensions grid)) ) )
+       (>= curRow (car (array-dimensions grid)) )
+       (>= curCol (car (cdr (array-dimensions grid)) ) )
      )
     
       ; This space is out of bounds... reject
-      (princ "Out of bounds")
+      ;(terpri)
+      ;(princ "Out of bounds")
       '()
     )
 
@@ -328,14 +330,15 @@
     ((aref grid curRow curCol)
 
       ; This space has a T -- it's in our current path
+      ; Normally we don't care, but if our path is full length AND
+      ; we're back at the start, this is good.
       (cond
 	((and
 	  (= targetRow curRow) 
           (= targetCol curCol) 
           (= (list-length path) (reduce '* (array-dimensions grid)))
          )
-	  ; TODO return path
-          T ; We have a full-length path which returned to the start
+          path ; We have a full-length path which returned to the start
 	)
 
 	(T
@@ -347,13 +350,82 @@
         
     (T
       ; This space has a NIL -- it's not in our current path
-      (princ "In bounds and NIL")
       (setf (aref grid curRow curCol) T)
-      ; Recursive calls go here
-      (write grid)
-      (print curRow)
-      (write curCol)
-      '()
+
+      (terpri)
+      (print grid)
+      (print path)
+
+      ; We'll store the results of each of the recursive calls
+      ; inside tmpPath. If any returns something other than NIL,
+      ; that means it was a successful call!
+      (let ((tmpPath NIL))
+	; Check up
+        (setq tmpPath
+          (calc_hamiltonian_cycles_part
+            grid
+            (append path '(0))
+            targetRow targetCol 
+            (- curRow 1) curCol
+          )
+        )
+
+	; The following checks all work because (not x) is only true when
+	; x is EXACTLY a value of NIL. And NIL is returned only if the
+	; given path does not yeild a valid output.
+
+	(when (not tmpPath)
+	  ; Check down
+          (setq tmpPath
+            (calc_hamiltonian_cycles_part
+              grid
+              (append path '(1))
+              targetRow targetCol 
+              (+ curRow 1) curCol
+            )
+          )
+	)
+
+	(when (not tmpPath)
+	  ; Check left
+          (setq tmpPath
+            (calc_hamiltonian_cycles_part
+              grid
+              (append path '(2))
+              targetRow targetCol 
+              curRow (- curCol 1)
+            )
+          )
+	)
+
+	(when (not tmpPath)
+	  ; Check right
+          (setq tmpPath
+            (calc_hamiltonian_cycles_part
+              grid
+              (append path '(3))
+              targetRow targetCol 
+              curRow (+ curCol 1)
+            )
+          )
+	)
+
+	(print tmpPath)
+
+	tmpPath ; Return whatever we've gotten
+      )
+
+;     (calc_hamiltonian_cycles_part
+;       grid
+;       (append path '(0))
+;       targetRow targetCol 
+;       (- curRow 1) curCol
+;     )
+
+
+      ;(print curRow)
+      ;(write curCol)
+      ;'()
     )
 
   ) ; end of cond
@@ -395,6 +467,7 @@
 
 ;;run
 ;(snake_init)
-(write(calc_hamiltonian_cycles 5 5 2 2))
+(terpri)
+(print(calc_hamiltonian_cycles 5 5 4 4))
 (terpri)
 (terpri)
