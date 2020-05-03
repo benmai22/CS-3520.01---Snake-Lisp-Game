@@ -449,10 +449,11 @@
   (let ((path '())
 	(numRowsDec (- numRows 1))
 	(numColsDec (- numCols 1)))
-	;(row 0)
-	;(col 0))
 
-    ; Step 0: Start at top-left (0,0) ... already doing that
+    ; Step 0: Start at top-left (0,0) ... just an assumption.
+    ; 
+    ; This assumption makes the rest of the steps simpler.
+    ; We'll correct for this at the end.
 
     ; Step 1: Go all the way down and then right
     ; 
@@ -489,7 +490,6 @@
     ; and then our trek back up.
     (let ((zzHeight (- numRowsDec 1))
 	  (zzCount  (/ (- numCols 2) 2)) )
-      (print zzCount)
       (loop
         for i from 1 to zzCount
         do
@@ -506,9 +506,37 @@
     ; Step 5: Now we just need to rotate through the list until we arrive
     ;         at the start row/col. Now this IS less efficient than a constant-
     ;         time algorithm, but this one is linear time and it is much simpler.
-    ; TODO
 
-    path
+    (let ((row 0)
+	  (col 0))
+      
+      (loop
+	while (or (/= row initRow) (/= col initCol))
+	do
+          (let ((nextMove (car path)))
+	    ; Adjust our "current" position based on the next move in the path
+	    (cond
+	      ((= nextMove up)    (setq row (- row 1)))
+	      ((= nextMove down)  (setq row (+ row 1)))
+	      ((= nextMove left)  (setq col (- col 1)))
+	      ((= nextMove right) (setq col (+ col 1)))
+	    )
+
+            (pprint nextMove)
+	    (write-string ": ")
+	    (write row)
+	    (write-string ", ")
+	    (write col)
+
+	    ; Rotate the path back to the end... we still want it, it's just
+	    ; now the last move we make.
+	    (setq path (append (cdr path) (list nextMove)))
+	  )
+      ) ; End loop
+    ) ; End let
+    
+
+    path ; Return the path we come up with
   )
 )
 
@@ -524,7 +552,7 @@
 
      ;(calc_hamiltonian_cycles 2 2)
      ;(setf moves (calc_hamiltonian_cycles 8 8 2 2))
-     (setf moves (calc_grid_cycle 10 16 2 2))
+     (setf moves (calc_grid_cycle 10 16 7 7))
      (print moves)
 
      ;(setf moves (list 0 2))
