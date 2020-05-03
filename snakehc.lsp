@@ -15,8 +15,6 @@
 (defvar *ccrash* nil)
 (defvar *renderer* nil)
 (defvar *runnno* nil)
-(defvar population (append '() '()))
-(defvar uppopulation (append '() '()))
 (defvar moves '() )
 (defvar idx 0)
 
@@ -288,7 +286,7 @@
 )
 
 
-; path generation
+; Hamiltonian cycles (THIS IS DEPRECATED NOW... it's WAY too slow to be of any use)
 (defun calc_hamiltonian_cycles_part (grid path favoredDir targetRow targetCol curRow curCol)
 
   ; When called, the current space could be T, NIL, or out of bounds.
@@ -557,7 +555,3 @@
 
 ;;run
 (snake_init)
-;(terpri)
-;(print(calc_hamiltonian_cycles 8 8 2 2))
-;(terpri)
-;(terpri)
