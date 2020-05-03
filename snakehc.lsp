@@ -298,7 +298,7 @@
 ; path generation
 ;(defvar tmpPath)
 
-(defun calc_hamiltonian_cycles_part (grid path targetRow targetCol curRow curCol)
+(defun calc_hamiltonian_cycles_part (grid path favoredDir targetRow targetCol curRow curCol)
   ;(reduce '* (array-dimensions grid))  ; Path should be this big when we're done
 
   ; When called, the current space could be T, NIL, or out of bounds.
@@ -353,15 +353,22 @@
       ; Thus we'll add it to the path.
       (setf (aref grid curRow curCol) T)
 
-;     (terpri)
-;     (print grid)
-;     (print path)
+      ;(terpri)
+      ;(print grid)
+      ;(print path)
 
       ; We'll store the results of each of the recursive calls
       ; inside tmpPath. If any returns something other than NIL,
       ; that means it was a successful call!
       (let ((tmpPath NIL) (moveList '(0 1 2 3)) (moveIdx 0))
 
+	; Move the direction we're favoring to the front of the list.
+        (setq moveList (append
+			 (list (nth favoredDir moveList))
+			 (remove favoredDir moveList))
+	)
+
+	; Try each of the directions
 	(loop while (and (not tmpPath)
 			 (< moveIdx (list-length moveList))
 		    ) do
@@ -377,6 +384,7 @@
               (calc_hamiltonian_cycles_part
                 grid
                 (append path (list nextMove))
+		nextMove ; favor the direction we're moving in now
                 targetRow targetCol 
                 (+ curRow rowOffset) (+ curCol colOffset)
               )
@@ -392,9 +400,10 @@
         ; If at this point we have not found a valid path,
         ; we'll have to backtrack. Thus, we'll set this space to be NIL
         ; again.
-        (when (not tmpPath)
+        (if (not tmpPath)
           (setf (aref grid curRow curCol) NIL)
         )
+
     
         tmpPath ; Return whatever we've gotten
 
@@ -415,6 +424,7 @@
   (calc_hamiltonian_cycles_part
     (make-array (list numRows numCols) :initial-element 'NIL) 
     '()
+    0 ; Favor "direction zero" (i.e. up)
     initRow initCol ; target
     initRow initCol ; current
   )
@@ -430,7 +440,7 @@
      (setf *running* t)
 
      ;(calc_hamiltonian_cycles 2 2)
-     (setf moves (calc_hamiltonian_cycles 4 5 2 2))
+     (setf moves (calc_hamiltonian_cycles 8 8 2 2))
      (print moves)
 
      ;(setf moves (list 0 2))
