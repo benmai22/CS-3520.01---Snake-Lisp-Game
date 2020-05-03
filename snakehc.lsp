@@ -10,8 +10,6 @@
 (defparameter *frame-delay* 1)
 (defparameter *close-delay* 1000)
 (defparameter *font* nil)
-(defparameter *pop-size* 10)
-(defparameter *learning-steps* 10000)
 
 (defvar *running* nil)
 (defvar *ccrash* nil)
@@ -258,10 +256,6 @@
 	  (setf idx 0)
         )
         (turn_worm_n worm moves (nth idx mov))  
-;       (when *running*
-;         (print idx)
-;         (write (nth idx mov))
-;       )
         (setf idx (+ 1 idx))
         ;(turn_worm worm moves)
         (move worm)
@@ -270,7 +264,6 @@
 	)
         (show-message (format nil "Score ~a" score) 0 0 renderer)
         (when *running*
-          (show-message (format nil "Learning no ~a" *runnno*) 0 15 renderer)
           (draw renderer food)
           (draw renderer worm) 
         ) 
@@ -522,11 +515,11 @@
 	      ((= nextMove right) (setq col (+ col 1)))
 	    )
 
-            (pprint nextMove)
-	    (write-string ": ")
-	    (write row)
-	    (write-string ", ")
-	    (write col)
+;           (pprint nextMove)
+;           (write-string ": ")
+;           (write row)
+;           (write-string ", ")
+;           (write col)
 
 	    ; Rotate the path back to the end... we still want it, it's just
 	    ; now the last move we make.
@@ -553,7 +546,7 @@
      ;(calc_hamiltonian_cycles 2 2)
      ;(setf moves (calc_hamiltonian_cycles 8 8 2 2))
      (setf moves (calc_grid_cycle 60 80 40 40))
-     (print moves)
+     ;(print moves)
 
      ;(setf moves (list 0 2))
 
@@ -566,5 +559,5 @@
 (snake_init)
 ;(terpri)
 ;(print(calc_hamiltonian_cycles 8 8 2 2))
-(terpri)
-(terpri)
+;(terpri)
+;(terpri)
