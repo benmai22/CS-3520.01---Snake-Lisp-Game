@@ -296,10 +296,7 @@
 
 
 ; path generation
-;(defvar tmpPath)
-
 (defun calc_hamiltonian_cycles_part (grid path favoredDir targetRow targetCol curRow curCol)
-  ;(reduce '* (array-dimensions grid))  ; Path should be this big when we're done
 
   ; When called, the current space could be T, NIL, or out of bounds.
   ;
@@ -412,11 +409,6 @@
 
   ) ; end of cond
 
-  ;print(
-	;(loop for row in spaces
-	      ;for col in row
-	      ;collect col)
-	;)
 )
 
 (defun calc_hamiltonian_cycles (numRows numCols initRow initCol)
@@ -430,6 +422,89 @@
   )
 )
 
+
+; Hamiltonian cycles (grid edition)
+
+; These get used like this earlier, but in interest in not messing with
+; what the others have written, I'll just use these in my own code.
+(defvar up 0)
+(defvar down 1)
+(defvar left 2)
+(defvar right 3)
+
+; Make a list which of size 'num' and fill it with 'value'
+(defun n_times (value num)
+  (let ((path '()))
+    (loop
+      for i from 0 to (- num 1)
+      do (setq path (append (list value) path))
+    )
+
+    path
+  )
+)
+
+(defun calc_grid_cycle (numRows numCols initRow initCol)
+
+  (let ((path '())
+	(numRowsDec (- numRows 1))
+	(numColsDec (- numCols 1)))
+	;(row 0)
+	;(col 0))
+
+    ; Step 0: Start at top-left (0,0) ... already doing that
+
+    ; Step 1: Go all the way down and then right
+    ; 
+    ; Note that we use numRows/ColsDec because we are already in a
+    ; row/col when we start, so moving the full length puts us out
+    ; of bounds.
+    (setq path (append path (n_times down  numRowsDec)))
+    (setq path (append path (n_times right numColsDec)))
+
+    ; Step 2a: If we have an even number of columns, we go back up.
+    (when (evenp numCols)
+      (setq path (append path (n_times up numRowsDec)))
+    )
+
+    ; Step 2b: If odd number of columns, we need to do some messy stuff...
+    (when (oddp numCols)
+      (print "Odd column count not supported")
+    )
+
+    ; Step 3: Now we need to do "tall zig-zags" all the way back home.
+    ;         That is, we need to move all the way down and then back
+    ;         all the up until we're back at (0,0).
+    ;
+    ; Each zigzag is 2 columns wide, so we divide the column count by 2.
+    ; Also, we already took two of these columns up with our trek down
+    ; and then our trek back up.
+    (let ((zzHeight (- numRowsDec 1))
+	  (zzCount  (/ (- numCols 2) 2)) )
+      (print zzCount)
+      (loop
+        for i from 1 to zzCount
+        do
+	  (setq path (append path (list left)))
+          (setq path (append path (n_times down zzHeight)))
+          (setq path (append path (list left)))
+          (setq path (append path (n_times up zzHeight)))
+      ) ; End loop
+    ) ; End let
+
+    ; Step 4: Then we need one last move to the left to finish off the path.
+    (setq path (append path (list left)))
+
+    ; Step 5: Now we just need to rotate through the list until we arrive
+    ;         at the start row/col. Now this IS less efficient than a constant-
+    ;         time algorithm, but this one is linear time and it is much simpler.
+    ; TODO
+
+    path
+  )
+)
+
+
 (defun snake_init ()
   (setf *running* t)
   (with-window-renderer (window renderer)
@@ -440,7 +515,8 @@
      (setf *running* t)
 
      ;(calc_hamiltonian_cycles 2 2)
-     (setf moves (calc_hamiltonian_cycles 8 8 2 2))
+     ;(setf moves (calc_hamiltonian_cycles 8 8 2 2))
+     (setf moves (calc_grid_cycle 10 16 2 2))
      (print moves)
 
      ;(setf moves (list 0 2))
