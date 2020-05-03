@@ -287,6 +287,8 @@
 
 
 ; Hamiltonian cycles (THIS IS DEPRECATED NOW... it's WAY too slow to be of any use)
+; This is based on the implementation from "GeeksforGeeks":
+; https://www.geeksforgeeks.org/hamiltonian-cycle-backtracking-6/
 (defun calc_hamiltonian_cycles_part (grid path favoredDir targetRow targetCol curRow curCol)
 
   ; When called, the current space could be T, NIL, or out of bounds.
