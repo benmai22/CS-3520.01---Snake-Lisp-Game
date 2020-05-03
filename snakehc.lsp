@@ -469,7 +469,15 @@
 
     ; Step 2b: If odd number of columns, we need to do some messy stuff...
     (when (oddp numCols)
-      (print "Odd column count not supported")
+      ; We'll want to zigzag back up to the top. Unlike below,
+      ; these are "tight" zigzags, being just two columns wide.
+      (let ((zzCount (/ (- numRows 2) 2)))
+        (loop
+	  for i from 1 to zzCount
+	  do (setq path (append path (list up left up right)))
+	)
+      )
+      (setq path (append path (list up left)))
     )
 
     ; Step 3: Now we need to do "tall zig-zags" all the way back home.
