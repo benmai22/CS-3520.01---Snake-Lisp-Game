@@ -7,7 +7,7 @@
 (defparameter *move-step* 10)
 (defparameter *food_size* 7)
 (defparameter *max_snake_length* 5)
-(defparameter *frame-delay* 30)
+(defparameter *frame-delay* 1)
 (defparameter *close-delay* 1000)
 (defparameter *font* nil)
 (defparameter *pop-size* 10)
@@ -78,9 +78,9 @@
 	(defmethod crashed-p :around ((worm worm))
 	  	(with-accessors ((x head-x) (y head-y)) worm
 	    	(or (call-next-method)
-	        	(<= x 0)
+	        	(< x 0)
 	        	(>= x *screen-width*)
-	        	(<= y 0)
+	        	(< y 0)
 	        	(>= y *screen-height*)))
   	)
 
@@ -258,10 +258,10 @@
 	  (setf idx 0)
         )
         (turn_worm_n worm moves (nth idx mov))  
-	(when *running*
-	  (print idx)
-	  (write (nth idx mov))
-	)
+;       (when *running*
+;         (print idx)
+;         (write (nth idx mov))
+;       )
         (setf idx (+ 1 idx))
         ;(turn_worm worm moves)
         (move worm)
@@ -552,7 +552,7 @@
 
      ;(calc_hamiltonian_cycles 2 2)
      ;(setf moves (calc_hamiltonian_cycles 8 8 2 2))
-     (setf moves (calc_grid_cycle 10 16 7 7))
+     (setf moves (calc_grid_cycle 60 80 40 40))
      (print moves)
 
      ;(setf moves (list 0 2))
@@ -564,7 +564,7 @@
 
 ;;run
 (snake_init)
-(terpri)
+;(terpri)
 ;(print(calc_hamiltonian_cycles 8 8 2 2))
 (terpri)
 (terpri)
