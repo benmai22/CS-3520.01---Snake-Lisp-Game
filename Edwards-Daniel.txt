@@ -1,0 +1,16 @@
+Right, so I implemented the hamiltonian cycles. Specifically, everything new in
+snakehc.lsp (that is, the code below line 291) is mine.
+
+Initially, I implemented a general solution, and though this is technically
+correct, it much too slow. It only worked for grids which were around 6x6 in
+size. Anything bigger would take forever to compute. when the actual grid is
+80x60, it was clearly not viable.  To be complete, it's been left in.
+
+The solution actually used is the calc_grid_cycle function. This function
+exploits the fact that we are working with an empty, rectangular grid, and
+does a few clever tricks to simplify computation significantly. Unlike the
+previous functions, this new one is of my own design.
+
+Also I fixed a bug which made it so that the snake could not be right next to
+the left and upper walls.
+
