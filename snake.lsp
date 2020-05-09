@@ -6,12 +6,14 @@
 (defparameter *screen-height* 600)
 (defparameter *move-step* 10)
 (defparameter *food_size* 7)
-(defparameter *max_snake_length* 50)
+(defparameter *max_snake_length* 1000)
 (defparameter *frame-delay* 60)
 (defparameter *close-delay* 1000)
 (defparameter *font* nil)
 
 (defvar *running* nil)
+(defvar moves 0)
+
 
 (defclass tex ()
 	((renderer
@@ -113,6 +115,7 @@
       		(:scancode-right
        			(unless (= hs -1)
         			(setf hs *move-step*))))
+            (incf moves)
     	)
   	)
 
@@ -236,10 +239,13 @@
    					(sdl2:render-present renderer)
    					(sdl2:delay *frame-delay*)
    					(when (not *running*)
+                        (princ "Score: ")
+                        (princ score)
+                        (princ "  Moves: ")
+                        (princ moves)
    						(sdl2:delay *close-delay*)
                 		(sdl2:push-quit-event))
   				)
-
   				(:quit () t)
   			)
   		)
