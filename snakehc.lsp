@@ -1,6 +1,9 @@
+(in-package :cl-user)
+
 (require :sdl2)
 (require :sdl2-ttf)
 (require :cl-opengl)
+(require :sb-sprof)
 
 (defparameter *screen-width* 800)
 (defparameter *screen-height* 600)
@@ -82,14 +85,15 @@
 
 	(defmethod move ((worm worm))
 	  	(with-accessors ((x head-x) (y head-y)) worm
-	    	(incf x (horizontal-speed worm))
-	    	(incf y (vertical-speed worm))
-	    	(when (member (cons x y) (body worm) :test #'equal)
-	      		(setf (crashed-p worm) t))
-	    	(setf (body worm) (append (body worm) (list (cons x y))))
-	    	(when (> (length (body worm))
-	            	(max-length worm))
-	      (pop (body worm))))
+	          (incf x (horizontal-speed worm))
+	          (incf y (vertical-speed worm))
+	          (when (member (cons x y) (body worm) :test #'equal)
+	          	(setf (crashed-p worm) t))
+	          (setf (body worm) (append (body worm) (list (cons x y))))
+	          (when (> (length (body worm)) (max-length worm))
+	                (pop (body worm))
+		  )
+		)
 	)
 
   (defmethod cancrash (key (worm worm))
@@ -111,9 +115,9 @@
     (when (member (cons x y) (body worm) :test #'equal)
         (setf *ccrash* t))
     (setf (body worm) (append (body worm) (list (cons x y))))
-    (when (> (length (body worm))
-            (max-length worm))
-    (pop (body worm)))
+    (when (> (length (body worm)) (max-length worm))
+      (pop (body worm))
+    )
 
     (setf hs (* -1 hs))
     (setf vs (* -1 vs))
@@ -121,8 +125,10 @@
     (incf y (vertical-speed worm))
     (setf (body worm) (append (body worm) (list (cons x y))))
     (when (> (length (body worm))
-            (max-length worm))
-    (pop (body worm)))))
+      (max-length worm))
+      (pop (body worm))
+    )
+    ))
   )
 
 	(defmethod draw (renderer (worm worm))
@@ -556,4 +562,20 @@
 )
 
 ;;run
+(sb-sprof:profile-call-counts "CL-USER")
+(sb-sprof:start-profiling  :max-samples 2000
+                           :mode :alloc
+                           :threads :all)
+
+
+
+;(sb-sprof:with-profiling (:max-samples 1000
+;                          :report :flat
+;                          ;:mode :alloc
+;                          :sample-interval 1
+;                          :threads :all
+;                          :loop T)
+; (snake_init))
 (snake_init)
+
+(sb-sprof:report :type :flat)
