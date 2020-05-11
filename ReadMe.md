@@ -35,12 +35,11 @@ Install Numpy with `sudo pip3 install -U numpy`.
 Install Setup Tools for Python3 with `pip3 install -U setuptools`.
 Install Openpyxl with `pip3 install openpyxl`.
 
-### Running Snake (playable game) ?????
+### Running Snake
 
 Navigate to directory of "Snake.py".
-Run command `python3 Snake.py`.
-Currently does not work?
+Run command `python3 Main.py` and select the option to manually play the game.
 
 ### Running Snake (genetic algorithm)
 
-To run Snake with genetic algorithm control, run `python3 Main.py`. You will be asked if you want to enter custom values or use default (answer with `y` or `n`). The program will output a data.xlsx file that logs the progress over time. By default the program will run for 50 generations with a population of 100. You can quit anytime and retain the data up until that point.
+To run Snake with genetic algorithm control, run `python3 Main.py` and select the option to run the game with the genetic algorithm. You will be asked if you want to enter custom values or use default (answer with `y` or `n`). The program will output a data.xlsx file that logs the progress over time. By default the program will run for 50 generations with a population of 100. You can quit anytime and retain the data up until that point.
