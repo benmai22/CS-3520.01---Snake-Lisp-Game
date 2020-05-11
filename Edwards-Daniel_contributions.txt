@@ -14,3 +14,24 @@ previous functions, this new one is of my own design.
 Also I fixed a bug which made it so that the snake could not be right next to
 the left and upper walls.
 
+
+Commits:
+
+[Commit for writing this file]           Now tracking data for the hamiltonian cycle's performance.
+7b1b8d50f4b7ac9ff66f11b18da005483a2cb7b6 Messed around with profiler.
+d59dfa624b5cb12e56d657a1d876e0975b53a760 Added citation.
+11ab6be14e761ce8cf691ef1b79c7d22fe8353f1 Filled out credits file. Removed other unused stuff.
+baffb4dc45dcaf19e3530ee5e6ea20827ad4c75a Cleaned up printing, unused variables, etc.
+7c21f853fdeda91c7b14978fe91cb0e52c4cc193 Put the playfield dimensions into the algorithm.
+69ce331d0cdaf34c59dfd829995ee4b693841b15 Now the algorithm handles starting from anywhere in the grid.
+299cd5cfdc73f8ba892f5e57e98a8e9d54464552 Made it so that odd column counts are supported.
+c50e70a2d93e19d14a0cfa943cd4759868db69bc Created newer, faster implementation for getting the H-cycles.
+3ef2b13c663307ca322544d260dd2849c7101549 Attempted to optimize the function, but it's no good.
+52e5a3ba4911a9f3c4f7e753df9eda6b4ea41bf4 Fixed formatting to make things a bit more readable.
+518dc9a97d2f73ef6c9bab3437ad07a2e6d2c1a4 Moved from hard coding to looping through possible move directions.
+35d660e5d7df3fa8763aca9e1d0215c9cfb37f34 The algorithm now crawls through a single path.
+c1e5a34fa3d09ab1535aec6ea1989e9a3d6060cb Setting up recursive checks.
+6e0ae47ed9b4bc69a43e065d2efa5544028c4a8e Made it so that the snake loops through moves instead.
+5670732aaa0d2078c0914e9f1499eebc21bc55da Removed poisoning since it messes with the end result.
+a3b04a0ebb2f46cee5a8bb7b77b9cc4004b0eb19 Made it so that the program runs just once with a predefined set of moves.
+

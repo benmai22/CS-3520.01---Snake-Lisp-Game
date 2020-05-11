@@ -242,9 +242,14 @@
 )
 
 (defun snake_run (renderer mov)
+
+  (princ "Score/Moves")
+  (terpri)
+
   (let ((worm (make-instance 'worm))
     (food (make-random-food))
-    (score 0))
+    (score 0)
+    (totalMoves 0))
   (sdl2:with-event-loop (:method :poll)
       (:keyup
         (:keysym keysym)
@@ -263,6 +268,7 @@
         (setf idx (+ 1 idx))
         ;(turn_worm worm moves)
         (move worm)
+	(setq totalMoves (+ totalMoves 1))
 	(when *running*
           (clear renderer)
 	)
@@ -277,7 +283,9 @@
         (when (collided worm food)
                 (incf score)
                 (eat worm food)
-                (setf food (make-random-food)))
+                (setf food (make-random-food))
+		(princ (format nil "~D/~D~%" score totalMoves))
+	)
         (sdl2:render-present renderer)
         (sdl2:delay *frame-delay*)
         ;(when (not *running*)
@@ -445,6 +453,7 @@
 
 (defun calc_grid_cycle (numRows numCols initRow initCol)
 
+
   (let ((path '())
 	(numRowsDec (- numRows 1))
 	(numColsDec (- numCols 1)))
@@ -562,20 +571,12 @@
 )
 
 ;;run
-(sb-sprof:profile-call-counts "CL-USER")
-(sb-sprof:start-profiling  :max-samples 2000
-                           :mode :alloc
-                           :threads :all)
+;(sb-sprof:profile-call-counts "CL-USER")
+;(sb-sprof:start-profiling  :max-samples 2000
+;                           :mode :alloc
+;                           :threads :all)
 
 
-
-;(sb-sprof:with-profiling (:max-samples 1000
-;                          :report :flat
-;                          ;:mode :alloc
-;                          :sample-interval 1
-;                          :threads :all
-;                          :loop T)
-; (snake_init))
 (snake_init)
 
-(sb-sprof:report :type :flat)
+;(sb-sprof:report :type :flat)
