@@ -1,0 +1,6 @@
+-created step-by-step instructons for how to install all necessary libraries and languages in order to run all versions of Snake and the algorithms implemented
+-coded data collection methods for lisp implementations
+-conducted human trials and found optimal game parameters for comfortable human play instead of machine play 
+-created graphs using data collected
+-created relevant powerpoint slides and presented them
+-wrote about relevent works in the final paper write up
