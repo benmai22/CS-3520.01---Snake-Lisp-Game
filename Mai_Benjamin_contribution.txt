@@ -1,0 +1,16 @@
+Things I've done for this project:
+
+1.) Code the Snake Game with Genetic Implementation for Lisp
+2.) Research how to use SDL2 and OpenGL in order to do this
+3.) Worked on Introduction, Methods/Algorithms/Concepts part A for Lisp Snake,
+     Input data for Experiments IV: Part A Lisp Snake, Results Part A: LISP Humans (Controls), and the LISP SDL2 references
+4.) Created the Github for my group and accepted requests to merge
+
+Commits:
+
+e62ef1977f4627e5b4ab30238f553f21ac5a582f - Merged pull request from jpbotk (Josh Botkin)
+52d2964df163f27cba9d4785ba4305130be18015 - Uploaded Snakeage.lsp
+4d2628d33488606da5f65c52ba9c8b73d7781f69 - Merged pull request from maxwildersmith
+d19c39e76bec66dda80e9dc43208383d98976efd - Merged pull request from Autofire (Daniel Edwards)
+
+Anything that ends with lisp, I initially did but others made changes to them!
