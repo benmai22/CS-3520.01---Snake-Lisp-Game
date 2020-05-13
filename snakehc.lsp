@@ -1,6 +1,9 @@
+(in-package :cl-user)
+
 (require :sdl2)
 (require :sdl2-ttf)
 (require :cl-opengl)
+(require :sb-sprof)
 
 (defparameter *screen-width* 800)
 (defparameter *screen-height* 600)
@@ -82,14 +85,15 @@
 
 	(defmethod move ((worm worm))
 	  	(with-accessors ((x head-x) (y head-y)) worm
-	    	(incf x (horizontal-speed worm))
-	    	(incf y (vertical-speed worm))
-	    	(when (member (cons x y) (body worm) :test #'equal)
-	      		(setf (crashed-p worm) t))
-	    	(setf (body worm) (append (body worm) (list (cons x y))))
-	    	(when (> (length (body worm))
-	            	(max-length worm))
-	      (pop (body worm))))
+	          (incf x (horizontal-speed worm))
+	          (incf y (vertical-speed worm))
+	          (when (member (cons x y) (body worm) :test #'equal)
+	          	(setf (crashed-p worm) t))
+	          (setf (body worm) (append (body worm) (list (cons x y))))
+	          (when (> (length (body worm)) (max-length worm))
+	                (pop (body worm))
+		  )
+		)
 	)
 
   (defmethod cancrash (key (worm worm))
@@ -111,9 +115,9 @@
     (when (member (cons x y) (body worm) :test #'equal)
         (setf *ccrash* t))
     (setf (body worm) (append (body worm) (list (cons x y))))
-    (when (> (length (body worm))
-            (max-length worm))
-    (pop (body worm)))
+    (when (> (length (body worm)) (max-length worm))
+      (pop (body worm))
+    )
 
     (setf hs (* -1 hs))
     (setf vs (* -1 vs))
@@ -121,8 +125,10 @@
     (incf y (vertical-speed worm))
     (setf (body worm) (append (body worm) (list (cons x y))))
     (when (> (length (body worm))
-            (max-length worm))
-    (pop (body worm)))))
+      (max-length worm))
+      (pop (body worm))
+    )
+    ))
   )
 
 	(defmethod draw (renderer (worm worm))
@@ -236,9 +242,14 @@
 )
 
 (defun snake_run (renderer mov)
+
+  (princ "Score/Moves")
+  (terpri)
+
   (let ((worm (make-instance 'worm))
     (food (make-random-food))
-    (score 0))
+    (score 0)
+    (totalMoves 0))
   (sdl2:with-event-loop (:method :poll)
       (:keyup
         (:keysym keysym)
@@ -257,6 +268,7 @@
         (setf idx (+ 1 idx))
         ;(turn_worm worm moves)
         (move worm)
+	(setq totalMoves (+ totalMoves 1))
 	(when *running*
           (clear renderer)
 	)
@@ -271,7 +283,9 @@
         (when (collided worm food)
                 (incf score)
                 (eat worm food)
-                (setf food (make-random-food)))
+                (setf food (make-random-food))
+		(princ (format nil "~D/~D~%" score totalMoves))
+	)
         (sdl2:render-present renderer)
         (sdl2:delay *frame-delay*)
         ;(when (not *running*)
@@ -439,6 +453,7 @@
 
 (defun calc_grid_cycle (numRows numCols initRow initCol)
 
+
   (let ((path '())
 	(numRowsDec (- numRows 1))
 	(numColsDec (- numCols 1)))
@@ -556,4 +571,12 @@
 )
 
 ;;run
+;(sb-sprof:profile-call-counts "CL-USER")
+;(sb-sprof:start-profiling  :max-samples 2000
+;                           :mode :alloc
+;                           :threads :all)
+
+
 (snake_init)
+
+;(sb-sprof:report :type :flat)
